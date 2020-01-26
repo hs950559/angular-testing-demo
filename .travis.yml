@@ -8,16 +8,16 @@ node_js:
 addons:
   apt:
     sources:
-      - sudo google-chrome
+      - google-chrome
     packages:
-      - sudu google-chrome-stable
+      - google-chrome-stable
 
 cache:
   directories:
      - ./node_modules
 
 before_install:
-  - sudo apt-get update
+  - apt-get update
   - sudo apt-get -y install libxml2-dev
 
 install:

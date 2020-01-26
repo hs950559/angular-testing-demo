@@ -8,17 +8,13 @@ node_js:
 addons:
   apt:
     sources:
-      - google-chrome
+      - sudo google-chrome
     packages:
-      - google-chrome-stable
+      - sudu google-chrome-stable
 
 cache:
   directories:
      - ./node_modules
-
-before_install:
-  - sudo apt-key update
-  - sudo apt-get update
 
 install:
   - npm install

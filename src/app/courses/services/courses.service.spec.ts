@@ -1,3 +1,4 @@
+import { Course } from './../model/course';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CoursesService } from './courses.service';
@@ -40,7 +41,6 @@ describe('CoursesService', () => {
   it('Should get one course by id', () => {
     coursesService.findCourseById(12)
       .subscribe(course => {
-        console.log('HEMANT', course);
         expect(course).toBeDefined();
         expect(course.titles.description).toEqual('Angular Testing Course');
       });
@@ -48,6 +48,27 @@ describe('CoursesService', () => {
     const req = testingController.expectOne('/api/courses/12');
     expect(req.request.method).toEqual('GET');
     req.flush(COURSES[12]);
+  });
+
+  it('Should update one course', () => {
+    const changes: Partial<Course> = {
+      titles: {
+        description: 'MY Updated Title'
+      }
+    };
+
+    coursesService.saveCourse(12, changes)
+      .subscribe(course => {
+        expect(course.id).toEqual(12);
+        expect(course.titles.description).toEqual('MY Updated Title');
+      });
+
+    const req = testingController.expectOne('/api/courses/12');
+    expect(req.request.method).toEqual('PUT');
+    req.flush({
+      ...COURSES[12],
+      ...changes
+    });
   });
 
   afterEach(() => {

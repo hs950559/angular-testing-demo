@@ -1,23 +1,32 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { ContactComponent } from './contact/contact.component';
-import { HomeComponent } from './home/home.component';
+import {HomeComponent} from "./courses/home/home.component";
+import {AboutComponent} from "./about/about.component";
+import {CourseComponent} from "./courses/course/course.component";
+import {CourseResolver} from "./courses/services/course.resolver";
 
 const routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'contact', component: ContactComponent },
-    { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule' },
-    { path: 'demo', loadChildren: './demo/demo.module#DemoModule' },
-    { path: 'calculator', loadChildren: './calculator/calculator.module#CalculatorModule' },
-    { path: 'posts', loadChildren: './posts/posts.module#PostsModule' },
     {
-      path: '',
-      redirectTo: '/home',
-      pathMatch: 'full'
+        path: "",
+        component: HomeComponent
+
     },
-    { path: '**', component: PageNotFoundComponent }
-  ];
+    {
+        path: "about",
+        component: AboutComponent
+    },
+    {
+        path: 'courses/:id',
+        component: CourseComponent,
+        resolve: {
+            course: CourseResolver
+        }
+    },
+    {
+        path: "**",
+        redirectTo: '/'
+    }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

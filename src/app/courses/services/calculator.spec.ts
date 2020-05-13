@@ -1,11 +1,15 @@
 import { CalculatorService } from './calculator.service';
 
 describe('CalculatorService', () => {
-  it('should add 2 numbers', () => {
-    // Step 1 - setup
-    const logger = jasmine.createSpyObj('LoggerService', ['log']);
-    const calculator = new CalculatorService(logger);
+  let logger: any;
+  let calculator: any;
 
+  beforeEach(() => {
+    logger = jasmine.createSpyObj('LoggerService', ['log']);
+    calculator = new CalculatorService(logger);
+  });
+
+  it('should add 2 numbers', () => {
     // Step 2 - Act
     const result = calculator.add(2, 4);
 
@@ -15,10 +19,6 @@ describe('CalculatorService', () => {
   });
 
   it('should subtract 2 numbers', () => {
-    // Step 1 - setup
-    const logger = jasmine.createSpyObj('LoggerService', ['log']);
-    const calculator = new CalculatorService(logger);
-
     // Step 2 - Act
     const result = calculator.subtract(12, 4);
 

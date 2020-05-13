@@ -36,4 +36,22 @@ describe('CoursesService', () => {
     expect(req.request.method).toEqual('GET');
     req.flush({ payload: Object.values(COURSES) });
   });
+
+  it('Should get one course by id', () => {
+    coursesService.findCourseById(12)
+      .subscribe(course => {
+        console.log('HEMANT', course);
+        expect(course).toBeDefined();
+        expect(course.titles.description).toEqual('Angular Testing Course');
+      });
+
+    const req = testingController.expectOne('/api/courses/12');
+    expect(req.request.method).toEqual('GET');
+    req.flush(COURSES[12]);
+  });
+
+  afterEach(() => {
+    // to make sure only one http call in each it block
+    testingController.verify();
+  });
 });

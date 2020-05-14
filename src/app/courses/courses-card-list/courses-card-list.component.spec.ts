@@ -59,8 +59,6 @@ describe('CoursesCardListComponent', () => {
     expect(title.nativeElement.textContent).toEqual(course.titles.description);
     expect(image.nativeElement.src).toEqual(course.iconUrl);
   });
-
-
 });
 
 

@@ -24,6 +24,7 @@ describe('HomeComponent', () => {
   let courseService: any;
   const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses']);
   const beginnerCourses = setupCourses().filter(item => item.category === 'BEGINNER');
+  const advancedCourses = setupCourses().filter(item => item.category === 'ADVANCED');
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -58,7 +59,6 @@ describe('HomeComponent', () => {
 
 
   it('should display only beginner courses', () => {
-
     courseService.findAllCourses.and.returnValue(of(beginnerCourses));
     fixture.detectChanges();
 
@@ -68,16 +68,20 @@ describe('HomeComponent', () => {
 
 
   it('should display only advanced courses', () => {
+    courseService.findAllCourses.and.returnValue(of(advancedCourses));
+    fixture.detectChanges();
 
-    pending();
-
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+    expect(tabs.length).toBe(1);
   });
 
 
   it('should display both tabs', () => {
+    courseService.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
 
-    pending();
-
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+    expect(tabs.length).toBe(2);
   });
 
 

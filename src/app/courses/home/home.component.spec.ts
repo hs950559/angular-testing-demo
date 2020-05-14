@@ -21,8 +21,9 @@ describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let component: HomeComponent;
   let el: DebugElement;
+  let courseService: any;
   const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses']);
-
+  const beginnerCourses = setupCourses().filter(item => item.category === 'BEGINNER');
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -39,6 +40,8 @@ describe('HomeComponent', () => {
 
       ]
     });
+
+    courseService = TestBed.get(CoursesService);
   });
 
   beforeEach(() => {
@@ -56,8 +59,11 @@ describe('HomeComponent', () => {
 
   it('should display only beginner courses', () => {
 
-    pending();
+    courseService.findAllCourses.and.returnValue(of(beginnerCourses));
+    fixture.detectChanges();
 
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+    expect(tabs.length).toBe(1);
   });
 
 

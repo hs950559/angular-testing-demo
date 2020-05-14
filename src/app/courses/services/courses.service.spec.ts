@@ -3,6 +3,7 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { CoursesService } from './courses.service';
 import { COURSES } from '../../../../server/db-data';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('CoursesService', () => {
   let coursesService: CoursesService;
@@ -68,6 +69,29 @@ describe('CoursesService', () => {
     req.flush({
       ...COURSES[12],
       ...changes
+    });
+  });
+
+  it('should give error if couse save failed', () => {
+    const changes: Partial<Course> = {
+      titles: {
+        description: 'MY Updated Title'
+      }
+    };
+
+    coursesService.saveCourse(12, changes)
+      .subscribe(course =>
+        () => fail('Update should have failed'),
+        (error: HttpErrorResponse) => {
+          expect(error.status).toEqual(500);
+        }
+      );
+
+    const req = testingController.expectOne('/api/courses/12');
+    expect(req.request.method).toEqual('PUT');
+    req.flush(null, {
+      status: 500,
+      statusText: 'Internal Server Error'
     });
   });
 

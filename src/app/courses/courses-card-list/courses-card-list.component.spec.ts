@@ -38,9 +38,11 @@ describe('CoursesCardListComponent', () => {
 
 
   it('should display the course list', () => {
-
-    pending();
-
+    component.courses = setupCourses();
+    fixture.detectChanges();
+    const cards = el.queryAll(By.css('.course-card'));
+    expect(cards).toBeTruthy();
+    expect(cards.length).toBe(12);
   });
 
 

@@ -1,10 +1,20 @@
 import { CoursesService } from './../services/courses.service';
-import { async, ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
+  TestBed,
+} from '@angular/core/testing';
 import { CoursesModule } from '../courses.module';
 import { DebugElement } from '@angular/core';
 
 import { HomeComponent } from './home.component';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { COURSES } from '../../../../server/db-data';
 import { setupCourses } from '../common/setup-test-data';
@@ -13,33 +23,30 @@ import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { click } from '../common/test-utils';
 
-
-
-
 describe('HomeComponent', () => {
-
   let fixture: ComponentFixture<HomeComponent>;
   let component: HomeComponent;
   let el: DebugElement;
   let courseService: any;
-  const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses']);
-  const beginnerCourses = setupCourses().filter(item => item.category === 'BEGINNER');
-  const advancedCourses = setupCourses().filter(item => item.category === 'ADVANCED');
+  const coursesServiceSpy = jasmine.createSpyObj('CoursesService', [
+    'findAllCourses',
+  ]);
+  const beginnerCourses = setupCourses().filter(
+    (item) => item.category === 'BEGINNER'
+  );
+  const advancedCourses = setupCourses().filter(
+    (item) => item.category === 'ADVANCED'
+  );
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        CoursesModule,
-        NoopAnimationsModule
-      ],
+      imports: [CoursesModule, NoopAnimationsModule],
       providers: [
         {
           provide: CoursesService,
-          useValue: coursesServiceSpy
-        }
+          useValue: coursesServiceSpy,
+        },
       ],
-      declarations: [
-
-      ]
+      declarations: [],
     });
 
     courseService = TestBed.get(CoursesService);
@@ -52,11 +59,8 @@ describe('HomeComponent', () => {
   });
 
   it('should create the component', () => {
-
     expect(component).toBeTruthy();
-
   });
-
 
   it('should display only beginner courses', () => {
     courseService.findAllCourses.and.returnValue(of(beginnerCourses));
@@ -66,7 +70,6 @@ describe('HomeComponent', () => {
     expect(tabs.length).toBe(1);
   });
 
-
   it('should display only advanced courses', () => {
     courseService.findAllCourses.and.returnValue(of(advancedCourses));
     fixture.detectChanges();
@@ -74,7 +77,6 @@ describe('HomeComponent', () => {
     const tabs = el.queryAll(By.css('.mat-tab-label'));
     expect(tabs.length).toBe(1);
   });
-
 
   it('should display both tabs', () => {
     courseService.findAllCourses.and.returnValue(of(setupCourses()));
@@ -84,9 +86,7 @@ describe('HomeComponent', () => {
     expect(tabs.length).toBe(2);
   });
 
-
   it('should display advanced courses when tab clicked', fakeAsync(() => {
-
     courseService.findAllCourses.and.returnValue(of(setupCourses()));
 
     fixture.detectChanges();
@@ -99,16 +99,38 @@ describe('HomeComponent', () => {
 
     flush();
 
-    const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+    const cardTitles = el.queryAll(
+      By.css('.mat-tab-body-active .mat-card-title')
+    );
 
     console.log(cardTitles);
 
     expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
 
-    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+    expect(cardTitles[0].nativeElement.textContent).toContain(
+      'Angular Security Course'
+    );
   }));
 
+  it('Asynchronous test example - plain Promise', fakeAsync(() => {
+    let test = false;
 
+    console.log('Creating promise');
+
+    Promise.resolve()
+      .then(() => {
+        console.log('Promise first then() evaluated successfully');
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        console.log('Promise second then() evaluated successfully');
+
+        test = true;
+      });
+    flushMicrotasks();
+    console.log('Running test assertions');
+
+    expect(test).toBeTruthy();
+  }));
 });
-
-

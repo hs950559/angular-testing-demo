@@ -23,6 +23,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { click } from '../common/test-utils';
+import { delay } from 'rxjs/operators';
 
 describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
@@ -159,5 +160,23 @@ describe('HomeComponent', () => {
     tick(500);
 
     expect(counter).toBe(11);
+  }));
+
+  it('Asynchronous test example - Observables', fakeAsync(() => {
+    let test = false;
+
+    console.log('Creating Observable');
+
+    const test$ = of(test).pipe(delay(1000));
+
+    test$.subscribe(() => {
+      test = true;
+    });
+
+    tick(1000);
+
+    console.log('Running test assertions');
+
+    expect(test).toBe(true);
   }));
 });

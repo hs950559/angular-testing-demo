@@ -6,6 +6,7 @@ import {
   flush,
   flushMicrotasks,
   TestBed,
+  tick,
 } from '@angular/core/testing';
 import { CoursesModule } from '../courses.module';
 import { DebugElement } from '@angular/core';
@@ -132,5 +133,31 @@ describe('HomeComponent', () => {
     console.log('Running test assertions');
 
     expect(test).toBeTruthy();
+  }));
+
+  it('Asynchronous test example - Promises + setTimeout()', fakeAsync(() => {
+    let counter = 0;
+
+    Promise.resolve().then(() => {
+      counter += 10;
+
+      setTimeout(() => {
+        counter += 1;
+      }, 1000);
+    });
+
+    expect(counter).toBe(0);
+
+    flushMicrotasks();
+
+    expect(counter).toBe(10);
+
+    tick(500);
+
+    expect(counter).toBe(10);
+
+    tick(500);
+
+    expect(counter).toBe(11);
   }));
 });
